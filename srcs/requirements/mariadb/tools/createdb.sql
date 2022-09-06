@@ -1,5 +1,5 @@
 CREATE DATABASE wordpress;
-CREATE USER 'fuserwyn'@'%' IDENTIFIED BY '1234';
-GRANT ALL PRIVELIGES ON wordpress.* TO 'fuserwyn'@'%';
-FLUSH PRIVELIGES
-ALTER USER 'root'@'localhst' IDENTIFIED BY 'root123123' 
+CREATE USER 'fuserwyn'@'%' IDENTIFIED BY 'sql_pass';
+GRANT ALL PRIVILEGES ON wordpress.* TO 'fuserwyn'@'%';
+FLUSH PRIVILEGES;
+ALTER USER 'root'@'localhost' IDENTIFIED BY 'root_pass';

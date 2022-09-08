@@ -1,56 +1,49 @@
-version: '3.9'
+version: "3"
 
 services:
-  mariadb:
-    container_name: mariadb
-    build: ./requirements/mariadb
-    restart: always
-    env_file: .env
-    volumes:
-      - db:/var/lib/mysql
-    networks:
-      - project
-
-  wordpress:
-    container_name: wordpress
-    build: ./requirements/wordpress
-    env_file: .env
-    volumes:
-      - wp:/var/www/html/wordpress
-    networks:
-      - project
-    depends_on:
-      - mariadb
-    
   nginx:
-    build: ./requirements/nginx/
+    build: requirements/nginx/
     container_name: nginx
-    hostname: localhost
     restart: always
-    depends_on: 
-      - wordpress 
+    depends_on: [ wordpress ]
     ports: [ 443:443 ]
-    volumes: 
-      - wp:/var/www/html/wordpress
-    networks: 
-      - project
-      
+    volumes: [ wp:/var/www/ ]
+    networks: [ wpnet ]
+  mariadb:
+    build: requirements/mariadb/
+    container_name: mariadb
+    restart: always
+    volumes: [ db-data:/var/lib/mysql ]
+#    ports: [3306:3306]
+    env_file: [ .env ]
+    networks: [ wpnet ]
+  wordpress:
+    build: requirements/wordpress/
+    container_name: wordpress
+    restart: always
+    env_file: [ .env ]
+    depends_on: [ mariadb ]
+    volumes: [ wp:/var/www/ ]
+#    ports: [9000:9000]
+    networks: [ wpnet ]
+
+##################################################
 volumes:
-  db:
-    name: db
+  db-data:
     driver: local
     driver_opts:
       type: none
       o: bind
-      device: /home/fuserwyn/data/wp
+      device: /home/fuserwyn/data/db-data
+
   wp:
-    name: wp
     driver: local
     driver_opts:
       type: none
       o: bind
       device: /home/fuserwyn/data/wp
-      
+
+#################################################
 networks:
-  project:
+  wpnet:
     driver: bridge

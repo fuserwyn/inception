@@ -1,3 +1,4 @@
+
 all: 	up
 
 up:
@@ -33,3 +34,14 @@ re:
 		docker-compose -f srcs/docker-compose.yml up
 
 .PHONY: all up down build ps fclean re
+
+
+
+
+
+
+
+
+
+
+
